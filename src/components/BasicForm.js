@@ -1,33 +1,35 @@
-import { wait } from "@testing-library/dom";
-import useInput2 from "../hooks/use-input2";
+import useInput from "../hooks/use-input";
+
+const isNotEmpty = value => value.trim() !== "";
+const isEmail = value => value.includes("@");
 
 const BasicForm = (props) => {
   const {
-    input: firstName,
-    valid: firstNameValid,
+    value: firstName,
+    isValid: firstNameValid,
     reset: resetNameInput,
     hasError: firstNameHasError,
-    blurHandler: firstNameBlurHandler,
-    inputHandler: inputFirstNameHandler,
-  } = useInput2((value) => value.trim() !== "");
+    inputBlurHandler: firstNameBlurHandler,
+    valueChangeHandler: inputFirstNameHandler,
+  } = useInput(isNotEmpty);
 
   const {
-    input: lastName,
-    valid: lastNameValid,
+    value: lastName,
+    isValid: lastNameValid,
     reset: resetLastNameInput,
     hasError: lastNameHasError,
-    blurHandler: lastNameBlurHandler,
-    inputHandler: inputLastNameHandler,
-  } = useInput2((value) => value.trim() !== "");
+    inputBlurHandler: lastNameBlurHandler,
+    valueChangeHandler: inputLastNameHandler,
+  } = useInput(isNotEmpty);
 
   const {
-    input: email,
-    valid: emailValid,
+    value: email,
+    isValid: emailValid,
     reset: resetEmailInput,
     hasError: emailHasError,
-    inputHandler: inputEmailHandler,
-    blurHandler: emailBlurHandler,
-  } = useInput2((value) => value.includes("@"));
+    valueChangeHandler: inputEmailHandler,
+    inputBlurHandler: emailBlurHandler,
+  } = useInput(isEmail);
 
   let formIsValid = false;
 
@@ -36,7 +38,8 @@ const BasicForm = (props) => {
     console.log("form is valid")
   }
 
-  const formSubmitHandler = () => {
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
     if (!formIsValid === true) {
       return;
     }
